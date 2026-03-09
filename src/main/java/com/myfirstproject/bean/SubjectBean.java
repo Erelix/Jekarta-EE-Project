@@ -3,19 +3,22 @@ package com.myfirstproject.bean;
 import java.io.Serializable;
 import java.util.List;
 
+import com.myfirstproject.dao.jpa.SubjectJpaDAO;
 import com.myfirstproject.entity.Subject;
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-import jakarta.persistence.EntityManager;
 
+/**
+ * Business logic component for Subject operations using JPA DAO.
+ */
 @Named
 @RequestScoped
 public class SubjectBean implements Serializable {
     
     @Inject
-    private EntityManager em;
+    private SubjectJpaDAO subjectDAO;
     
     private Subject subject = new Subject();
     private List<Subject> subjects;
@@ -23,7 +26,7 @@ public class SubjectBean implements Serializable {
     
     public void loadSubject() {
         if (editId != null && editId > 0) {
-            Subject subjectToEdit = em.find(Subject.class, editId);
+            Subject subjectToEdit = subjectDAO.findById(editId);
             if (subjectToEdit != null) {
                 this.subject = subjectToEdit;
             }
@@ -32,20 +35,15 @@ public class SubjectBean implements Serializable {
     
     public String saveSubject() {
         try {
-            em.getTransaction().begin();
             if (subject.getId() == null) {
-                em.persist(subject);
+                subjectDAO.save(subject);
             } else {
-                em.merge(subject);
+                subjectDAO.update(subject);
             }
-            em.getTransaction().commit();
             subject = new Subject();
             subjects = null;
             return "subjects?faces-redirect=true";
         } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
             e.printStackTrace();
             return null;
         }
@@ -53,22 +51,10 @@ public class SubjectBean implements Serializable {
     
     public String deleteSubject(Long id) {
         try {
-            em.getTransaction().begin();
-            Subject subjectToDelete = em.find(Subject.class, id);
-            if (subjectToDelete != null) {
-                // Remove associations with students
-                for (var student : subjectToDelete.getStudents()) {
-                    student.getSubjects().remove(subjectToDelete);
-                }
-                em.remove(subjectToDelete);
-            }
-            em.getTransaction().commit();
+            subjectDAO.delete(id);
             subjects = null;
             return "subjects?faces-redirect=true";
         } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
             e.printStackTrace();
             return null;
         }
@@ -79,12 +65,12 @@ public class SubjectBean implements Serializable {
     }
     
     public Subject findSubjectById(Long id) {
-        return em.find(Subject.class, id);
+        return subjectDAO.findById(id);
     }
     
     public List<Subject> getAllSubjects() {
         if (subjects == null) {
-            subjects = em.createQuery("SELECT DISTINCT s FROM Subject s LEFT JOIN FETCH s.students ORDER BY s.name", Subject.class).getResultList();
+            subjects = subjectDAO.findAll();
         }
         return subjects;
     }

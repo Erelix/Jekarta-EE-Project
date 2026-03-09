@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.myfirstproject.mybatis.mapper.StudentMapper">
+    
+    <!-- Result map for Student with Group (demonstrates one-to-many from Group perspective) -->
+    <resultMap id="studentWithGroup" type="StudentModel">
+        <id property="id" column="id"/>
+        <result property="firstName" column="first_name"/>
+        <result property="lastName" column="last_name"/>
+        <result property="email" column="email"/>
+        <result property="groupId" column="group_id"/>
+        <!-- Association = one-to-one or many-to-one relationship -->
+        <association property="group" javaType="GroupModel">
+            <id property="id" column="group_id"/>
+            <result property="name" column="group_name"/>
+            <result property="description" column="group_description"/>
+        </association>
+    </resultMap>
+    
+    <!-- Result map for Student with Subjects (demonstrates many-to-many) -->
+    <resultMap id="studentWithSubjects" type="StudentModel" extends="studentWithGroup">
+        <!-- Collection = one-to-many or many-to-many relationship -->
+        <collection property="subjects" ofType="SubjectModel">
+            <id property="id" column="subject_id"/>
+            <result property="name" column="subject_name"/>
+            <result property="description" column="subject_description"/>
+            <result property="credits" column="subject_credits"/>
+        </collection>
+    </resultMap>
+    
+    <!-- Find student by ID with group and subjects (shows both relationship types) -->
+    <select id="findById" resultMap="studentWithSubjects">
+        SELECT 
+            s.id,
+            s.first_name,
+            s.last_name,
+            s.email,
+            s.group_id,
+            g.name as group_name,
+            g.description as group_description,
+            subj.id as subject_id,
+            subj.name as subject_name,
+            subj.description as subject_description,
+            subj.credits as subject_credits
+        FROM student s
+        LEFT JOIN student_group g ON s.group_id = g.id
+        LEFT JOIN student_subject ss ON s.id = ss.student_id
+        LEFT JOIN subject subj ON ss.subject_id = subj.id
+        WHERE s.id = #{id}
+    </select>
+    
+    <!-- Find all students with their groups -->
+    <select id="findAll" resultMap="studentWithGroup">
+        SELECT 
+            s.id,
+            s.first_name,
+            s.last_name,
+            s.email,
+            s.group_id,
+            g.name as group_name,
+            g.description as group_description
+        FROM student s
+        LEFT JOIN student_group g ON s.group_id = g.id
+        ORDER BY s.last_name, s.first_name
+    </select>
+    
+    <!-- Find students by group ID (demonstrates one-to-many from Group->Students) -->
+    <select id="findByGroupId" resultMap="studentWithGroup">
+        SELECT 
+            s.id,
+            s.first_name,
+            s.last_name,
+            s.email,
+            s.group_id,
+            g.name as group_name,
+            g.description as group_description
+        FROM student s
+        LEFT JOIN student_group g ON s.group_id = g.id
+        WHERE s.group_id = #{groupId}
+        ORDER BY s.last_name, s.first_name
+    </select>
+    
+    <!-- Insert new student -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO student (first_name, last_name, email, group_id)
+        VALUES (#{firstName}, #{lastName}, #{email}, #{groupId})
+    </insert>
+    
+    <!-- Update student -->
+    <update id="update">
+        UPDATE student
+        SET first_name = #{firstName},
+            last_name = #{lastName},
+            email = #{email},
+            group_id = #{groupId}
+        WHERE id = #{id}
+    </update>
+    
+    <!-- Delete student -->
+    <delete id="delete">
+        DELETE FROM student WHERE id = #{id}
+    </delete>
+    
+    <!-- Enroll student in subject (many-to-many insert into junction table) -->
+    <insert id="enrollInSubject">
+        INSERT INTO student_subject (student_id, subject_id)
+        VALUES (#{param1}, #{param2})
+    </insert>
+    
+    <!-- Unenroll student from subject (many-to-many delete from junction table) -->
+    <delete id="unenrollFromSubject">
+        DELETE FROM student_subject
+        WHERE student_id = #{param1} AND subject_id = #{param2}
+    </delete>
+    
+</mapper>

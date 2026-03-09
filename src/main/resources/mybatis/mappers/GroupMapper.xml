@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.myfirstproject.mybatis.mapper.GroupMapper">
+    
+    <!-- Basic result map for Group -->
+    <resultMap id="groupBase" type="GroupModel">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="description" column="description"/>
+    </resultMap>
+    
+    <!-- Result map for Group with Students (demonstrates one-to-many relationship) -->
+    <resultMap id="groupWithStudents" type="GroupModel">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="description" column="description"/>
+        <!-- Collection demonstrates ONE-TO-MANY: one group has many students -->
+        <collection property="students" ofType="StudentModel">
+            <id property="id" column="student_id"/>
+            <result property="firstName" column="student_first_name"/>
+            <result property="lastName" column="student_last_name"/>
+            <result property="email" column="student_email"/>
+            <result property="groupId" column="id"/>
+        </collection>
+    </resultMap>
+    
+    <!-- Find group by ID -->
+    <select id="findById" resultMap="groupBase">
+        SELECT id, name, description
+        FROM student_group
+        WHERE id = #{id}
+    </select>
+    
+    <!-- Find all groups -->
+    <select id="findAll" resultMap="groupBase">
+        SELECT id, name, description
+        FROM student_group
+        ORDER BY name
+    </select>
+    
+    <!-- Find group with students (demonstrates one-to-many) -->
+    <select id="findByIdWithStudents" resultMap="groupWithStudents">
+        SELECT 
+            g.id,
+            g.name,
+            g.description,
+            s.id as student_id,
+            s.first_name as student_first_name,
+            s.last_name as student_last_name,
+            s.email as student_email
+        FROM student_group g
+        LEFT JOIN student s ON g.id = s.group_id
+        WHERE g.id = #{id}
+    </select>
+    
+    <!-- Insert new group -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO student_group (name, description)
+        VALUES (#{name}, #{description})
+    </insert>
+    
+    <!-- Update group -->
+    <update id="update">
+        UPDATE student_group
+        SET name = #{name},
+            description = #{description}
+        WHERE id = #{id}
+    </update>
+    
+    <!-- Delete group -->
+    <delete id="delete">
+        DELETE FROM student_group WHERE id = #{id}
+    </delete>
+    
+</mapper>

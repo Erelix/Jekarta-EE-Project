@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.myfirstproject.mybatis.mapper.SubjectMapper">
+    
+    <!-- Basic result map for Subject -->
+    <resultMap id="subjectBase" type="SubjectModel">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="description" column="description"/>
+        <result property="credits" column="credits"/>
+    </resultMap>
+    
+    <!-- Result map for Subject with Students (demonstrates many-to-many) -->
+    <resultMap id="subjectWithStudents" type="SubjectModel">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="description" column="description"/>
+        <result property="credits" column="credits"/>
+        <!-- Collection demonstrates MANY-TO-MANY: subject has many students, student has many subjects -->
+        <collection property="students" ofType="StudentModel">
+            <id property="id" column="student_id"/>
+            <result property="firstName" column="student_first_name"/>
+            <result property="lastName" column="student_last_name"/>
+            <result property="email" column="student_email"/>
+        </collection>
+    </resultMap>
+    
+    <!-- Find subject by ID -->
+    <select id="findById" resultMap="subjectBase">
+        SELECT id, name, description, credits
+        FROM subject
+        WHERE id = #{id}
+    </select>
+    
+    <!-- Find all subjects -->
+    <select id="findAll" resultMap="subjectBase">
+        SELECT id, name, description, credits
+        FROM subject
+        ORDER BY name
+    </select>
+    
+    <!-- Find subject with enrolled students (demonstrates many-to-many) -->
+    <select id="findByIdWithStudents" resultMap="subjectWithStudents">
+        SELECT 
+            subj.id,
+            subj.name,
+            subj.description,
+            subj.credits,
+            s.id as student_id,
+            s.first_name as student_first_name,
+            s.last_name as student_last_name,
+            s.email as student_email
+        FROM subject subj
+        LEFT JOIN student_subject ss ON subj.id = ss.subject_id
+        LEFT JOIN student s ON ss.student_id = s.id
+        WHERE subj.id = #{id}
+    </select>
+    
+    <!-- Find subjects by student ID (demonstrates many-to-many from other side) -->
+    <select id="findByStudentId" resultMap="subjectBase">
+        SELECT 
+            subj.id,
+            subj.name,
+            subj.description,
+            subj.credits
+        FROM subject subj
+        INNER JOIN student_subject ss ON subj.id = ss.subject_id
+        WHERE ss.student_id = #{studentId}
+        ORDER BY subj.name
+    </select>
+    
+    <!-- Insert new subject -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO subject (name, description, credits)
+        VALUES (#{name}, #{description}, #{credits})
+    </insert>
+    
+    <!-- Update subject -->
+    <update id="update">
+        UPDATE subject
+        SET name = #{name},
+            description = #{description},
+            credits = #{credits}
+        WHERE id = #{id}
+    </update>
+    
+    <!-- Delete subject -->
+    <delete id="delete">
+        DELETE FROM subject WHERE id = #{id}
+    </delete>
+    
+</mapper>

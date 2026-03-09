@@ -53,6 +53,13 @@
             <version>2.2.224</version>
         </dependency>
         
+        <!-- MyBatis -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>3.5.13</version>
+        </dependency>
+        
         <!-- CDI for Jakarta EE -->
         <dependency>
             <groupId>jakarta.enterprise</groupId>

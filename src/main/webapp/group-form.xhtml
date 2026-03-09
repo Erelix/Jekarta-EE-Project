@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Group Form</title>
+</h:head>
+<h:body>
+    <f:metadata>
+        <f:viewParam name="editId" value="#{groupBean.editId}" />
+        <f:event type="preRenderView" listener="#{groupBean.loadGroup}" />
+    </f:metadata>
+    
+    <h1><h:outputText value="Add New Group" rendered="#{groupBean.group.id == null}" /><h:outputText value="Edit Group" rendered="#{groupBean.group.id != null}" /></h1>
+    
+    <h:form>
+        <h:inputHidden value="#{groupBean.group.id}" />
+        <p>
+            <label for="name">Group Name *</label><br/>
+            <h:inputText id="name" value="#{groupBean.group.name}" required="true" />
+        </p>
+        
+        <p>
+            <label for="description">Description</label><br/>
+            <h:inputTextarea id="description" value="#{groupBean.group.description}" rows="5" cols="50" />
+        </p>
+        
+        <p>
+            <h:commandButton value="Save" action="#{groupBean.saveGroup()}" />
+            <h:button value="Cancel" outcome="groups" />
+        </p>
+    </h:form>
+    
+    <p>
+        <h:link outcome="groups" value="← Back to Groups" />
+    </p>
+</h:body>
+</html>

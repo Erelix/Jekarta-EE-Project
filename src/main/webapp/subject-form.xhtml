@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Subject Form</title>
+</h:head>
+<h:body>
+    <f:metadata>
+        <f:viewParam name="editId" value="#{subjectBean.editId}" />
+        <f:event type="preRenderView" listener="#{subjectBean.loadSubject}" />
+    </f:metadata>
+    
+    <h1><h:outputText value="Add New Subject" rendered="#{subjectBean.subject.id == null}" /><h:outputText value="Edit Subject" rendered="#{subjectBean.subject.id != null}" /></h1>
+    
+    <h:form>
+        <h:inputHidden value="#{subjectBean.subject.id}" />
+        <p>
+            <label for="name">Subject Name *</label><br/>
+            <h:inputText id="name" value="#{subjectBean.subject.name}" required="true" />
+        </p>
+        
+        <p>
+            <label for="description">Description</label><br/>
+            <h:inputTextarea id="description" value="#{subjectBean.subject.description}" rows="5" cols="50" />
+        </p>
+        
+        <p>
+            <label for="credits">Credits</label><br/>
+            <h:inputText id="credits" value="#{subjectBean.subject.credits}" />
+        </p>
+        
+        <p>
+            <h:commandButton value="Save" action="#{subjectBean.saveSubject()}" />
+            <h:button value="Cancel" outcome="subjects" />
+        </p>
+    </h:form>
+    
+    <p>
+        <h:link outcome="subjects" value="← Back to Subjects" />
+    </p>
+</h:body>
+</html>

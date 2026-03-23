@@ -29,6 +29,7 @@ public class Student {
     @Column(nullable = false)
     private String lastName;
     
+    @Column(name = "el_pastas")
     private String email;
     
     @ManyToOne(optional = false)

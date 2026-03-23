@@ -3,17 +3,12 @@ package com.myfirstproject.mybatis.model;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * MyBatis POJO for Group entity.
- * Plain Java object without JPA annotations.
- */
 public class GroupModel {
     
     private Long id;
     private String name;
     private String description;
     
-    // For joined queries
     private List<StudentModel> students = new ArrayList<>();
     
     public GroupModel() {

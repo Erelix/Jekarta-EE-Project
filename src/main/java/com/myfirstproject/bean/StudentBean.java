@@ -64,14 +64,14 @@ public class StudentBean implements Serializable {
     @Transactional
     public String saveStudent() {
         try {
-            // Merge all detached entities back into the current persistence context
-            student = em.merge(student);
-            
+            // Set group BEFORE merge to avoid null validation error
             if (selectedGroupId != null) {
                 Group group = groupDAO.findById(selectedGroupId);
-                group = em.merge(group);
                 student.setGroup(group);
             }
+            
+            // Merge all detached entities back into the current persistence context
+            student = em.merge(student);
             
             // Clear existing subjects and add selected ones
             student.getSubjects().clear();

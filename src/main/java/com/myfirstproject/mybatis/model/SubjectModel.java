@@ -3,10 +3,6 @@ package com.myfirstproject.mybatis.model;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * MyBatis POJO for Subject entity.
- * Plain Java object without JPA annotations.
- */
 public class SubjectModel {
     
     private Long id;
@@ -14,7 +10,6 @@ public class SubjectModel {
     private String description;
     private Integer credits;
     
-    // For joined queries
     private List<StudentModel> students = new ArrayList<>();
     
     public SubjectModel() {

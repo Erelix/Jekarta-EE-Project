@@ -3,11 +3,6 @@ package com.myfirstproject.mybatis.model;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * MyBatis POJO for Student entity.
- * Unlike JPA entities, this is a plain Java object without annotations.
- * Field names match database column names (or use MyBatis mapping).
- */
 public class StudentModel {
     
     private Long id;
@@ -16,7 +11,6 @@ public class StudentModel {
     private String email;
     private Long groupId;
     
-    // For joined queries
     private GroupModel group;
     private List<SubjectModel> subjects = new ArrayList<>();
     

@@ -1,5 +1,8 @@
 # Student Management System
 
+java -cp ~/.m2/repository/com/h2database/h2/*/h2-*.jar org.h2.tools.Server -web -webAllowOthers -webPort 8082
+
+
 A Jakarta EE web application demonstrating **both ORM/JPA and DataMapper/MyBatis** approaches for database access.
 
 ## Project Overview

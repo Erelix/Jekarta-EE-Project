@@ -23,6 +23,7 @@ public class Subject {
     @Column(nullable = false)
     private String name;
     
+    @Column(name = "description")
     private String description;
     
     private Integer credits;

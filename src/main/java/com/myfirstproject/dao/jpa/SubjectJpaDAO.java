@@ -3,6 +3,7 @@ package com.myfirstproject.dao.jpa;
 import java.util.List;
 
 import com.myfirstproject.entity.Subject;
+import com.myfirstproject.transaction.Transactional;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -11,8 +12,10 @@ import jakarta.persistence.EntityManager;
 /**
  * JPA Data Access Object for Subject entity.
  * Demonstrates many-to-many relationship handling with JPA.
+ * Transactions managed declaratively with @Transactional annotation.
  */
 @ApplicationScoped
+@Transactional
 public class SubjectJpaDAO {
     
     @Inject
@@ -61,53 +64,28 @@ public class SubjectJpaDAO {
     
     /**
      * Save new subject.
+     * Transaction automatically managed by @Transactional interceptor.
      */
     public void save(Subject subject) {
-        try {
-            em.getTransaction().begin();
-            em.persist(subject);
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            throw e;
-        }
+        em.persist(subject);
     }
     
     /**
      * Update existing subject.
+     * Transaction automatically managed by @Transactional interceptor.
      */
     public Subject update(Subject subject) {
-        try {
-            em.getTransaction().begin();
-            Subject merged = em.merge(subject);
-            em.getTransaction().commit();
-            return merged;
-        } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            throw e;
-        }
+        return em.merge(subject);
     }
     
     /**
      * Delete subject.
+     * Transaction automatically managed by @Transactional interceptor.
      */
     public void delete(Long id) {
-        try {
-            em.getTransaction().begin();
-            Subject subject = em.find(Subject.class, id);
-            if (subject != null) {
-                em.remove(subject);
-            }
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            throw e;
+        Subject subject = em.find(Subject.class, id);
+        if (subject != null) {
+            em.remove(subject);
         }
     }
 }

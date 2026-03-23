@@ -3,6 +3,7 @@ package com.myfirstproject.dao.jpa;
 import java.util.List;
 
 import com.myfirstproject.entity.Group;
+import com.myfirstproject.transaction.Transactional;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -11,8 +12,10 @@ import jakarta.persistence.EntityManager;
 /**
  * JPA Data Access Object for Group entity.
  * Demonstrates one-to-many relationship handling with JPA.
+ * Transactions managed declaratively with @Transactional annotation.
  */
 @ApplicationScoped
+@Transactional
 public class GroupJpaDAO {
     
     @Inject
@@ -50,53 +53,28 @@ public class GroupJpaDAO {
     
     /**
      * Save new group.
+     * Transaction automatically managed by @Transactional interceptor.
      */
     public void save(Group group) {
-        try {
-            em.getTransaction().begin();
-            em.persist(group);
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            throw e;
-        }
+        em.persist(group);
     }
     
     /**
      * Update existing group.
+     * Transaction automatically managed by @Transactional interceptor.
      */
     public Group update(Group group) {
-        try {
-            em.getTransaction().begin();
-            Group merged = em.merge(group);
-            em.getTransaction().commit();
-            return merged;
-        } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            throw e;
-        }
+        return em.merge(group);
     }
     
     /**
      * Delete group.
+     * Transaction automatically managed by @Transactional interceptor.
      */
     public void delete(Long id) {
-        try {
-            em.getTransaction().begin();
-            Group group = em.find(Group.class, id);
-            if (group != null) {
-                em.remove(group);
-            }
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            throw e;
+        Group group = em.find(Group.class, id);
+        if (group != null) {
+            em.remove(group);
         }
     }
 }

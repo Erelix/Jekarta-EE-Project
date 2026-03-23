@@ -29,11 +29,6 @@
         </h:column>
         
         <h:column>
-            <f:facet name="header">Number of Students</f:facet>
-            #{group.students.size()}
-        </h:column>
-        
-        <h:column>
             <f:facet name="header">Actions</f:facet>
             <h:form>
                 <h:commandButton value="Edit" action="#{groupBean.editGroup(group.id)}" />
@@ -44,7 +39,7 @@
     </h:dataTable>
     
     <p>
-        <h:link outcome="index" value="← Back to Home" />
+        <h:link outcome="index" value="Back to Home" />
         |
         <h:link outcome="students" value="View Students" />
         |

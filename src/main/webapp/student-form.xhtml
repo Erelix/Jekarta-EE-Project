@@ -40,11 +40,11 @@
         </p>
         
         <p>
-            <label for="subjects">Subjects (Hold Ctrl to select multiple)</label><br/>
-            <h:selectManyListbox id="subjects" value="#{studentBean.selectedSubjectIds}" size="10">
+            <label for="subjects">Subjects</label><br/>
+            <h:selectManyCheckbox id="subjects" value="#{studentBean.selectedSubjectIds}">
                 <f:selectItems value="#{studentBean.allSubjects}" var="subject" 
                                itemValue="#{subject.id}" itemLabel="#{subject.name}" />
-            </h:selectManyListbox>
+            </h:selectManyCheckbox>
         </p>
         
         <p>
@@ -54,7 +54,7 @@
     </h:form>
     
     <p>
-        <h:link outcome="students" value="← Back to Students" />
+        <h:link outcome="students" value="Back to Students" />
     </p>
 </h:body>
 </html>

@@ -10,10 +10,12 @@ import com.myfirstproject.dao.jpa.SubjectJpaDAO;
 import com.myfirstproject.entity.Group;
 import com.myfirstproject.entity.Student;
 import com.myfirstproject.entity.Subject;
+import com.myfirstproject.transaction.Transactional;
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import jakarta.persistence.EntityManager;
 
 /**
  * Business logic component (CDI bean) for Student operations.
@@ -36,6 +38,9 @@ public class StudentBean implements Serializable {
     @Inject
     private SubjectJpaDAO subjectDAO;
     
+    @Inject
+    private EntityManager em;
+    
     private Student student = new Student();
     private List<Student> students;
     private Long selectedGroupId;
@@ -56,50 +61,33 @@ public class StudentBean implements Serializable {
         }
     }
     
+    @Transactional
     public String saveStudent() {
         try {
-            // DAO methods have @Transactional - automatic transaction management
-            Student managedStudent;
-            if (student.getId() == null) {
-                // Create new
-                if (selectedGroupId != null) {
-                    Group group = groupDAO.findById(selectedGroupId);
-                    student.setGroup(group);
-                }
-                if (selectedSubjectIds != null && !selectedSubjectIds.isEmpty()) {
-                    List<Subject> subjects = new ArrayList<>();
-                    for (Long subjectId : selectedSubjectIds) {
-                        Subject subject = subjectDAO.findById(subjectId);
-                        if (subject != null) {
-                            subjects.add(subject);
-                        }
-                    }
-                    student.setSubjects(subjects);
-                }
-                studentDAO.save(student);
-            } else {
-                // Update existing
-                managedStudent = studentDAO.findById(student.getId());
-                managedStudent.setFirstName(student.getFirstName());
-                managedStudent.setLastName(student.getLastName());
-                managedStudent.setEmail(student.getEmail());
-                
-                if (selectedGroupId != null) {
-                    Group group = groupDAO.findById(selectedGroupId);
-                    managedStudent.setGroup(group);
-                }
-                
-                managedStudent.getSubjects().clear();
-                if (selectedSubjectIds != null && !selectedSubjectIds.isEmpty()) {
-                    for (Long subjectId : selectedSubjectIds) {
-                        Subject subject = subjectDAO.findById(subjectId);
-                        if (subject != null) {
-                            managedStudent.getSubjects().add(subject);
-                        }
-                    }
-                }
-                studentDAO.update(managedStudent);
+            // Merge all detached entities back into the current persistence context
+            student = em.merge(student);
+            
+            if (selectedGroupId != null) {
+                Group group = groupDAO.findById(selectedGroupId);
+                group = em.merge(group);
+                student.setGroup(group);
             }
+            
+            // Clear existing subjects and add selected ones
+            student.getSubjects().clear();
+            if (selectedSubjectIds != null) {
+                for (Long subjectId : selectedSubjectIds) {
+                    Subject subject = subjectDAO.findById(subjectId);
+                    if (subject != null) {
+                        // Merge detached subject back into persistence context
+                        Subject managedSubject = em.merge(subject);
+                        student.addSubject(managedSubject);
+                    }
+                }
+            }
+            
+            // Flush changes within the current context - everything is already managed
+            em.flush();
             
             student = new Student();
             selectedGroupId = null;
@@ -166,16 +154,16 @@ public class StudentBean implements Serializable {
         this.selectedGroupId = selectedGroupId;
     }
     
+    public Long getEditId() {
+        return editId;
+    }
+    
     public List<Long> getSelectedSubjectIds() {
         return selectedSubjectIds;
     }
     
     public void setSelectedSubjectIds(List<Long> selectedSubjectIds) {
         this.selectedSubjectIds = selectedSubjectIds;
-    }
-    
-    public Long getEditId() {
-        return editId;
     }
     
     public void setEditId(Long editId) {

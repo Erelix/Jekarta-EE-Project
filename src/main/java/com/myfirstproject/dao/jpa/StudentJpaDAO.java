@@ -3,6 +3,7 @@ package com.myfirstproject.dao.jpa;
 import java.util.List;
 
 import com.myfirstproject.entity.Student;
+import com.myfirstproject.transaction.Transactional;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -11,9 +12,13 @@ import jakarta.persistence.EntityManager;
 /**
  * JPA Data Access Object for Student entity.
  * Uses EntityManager for database operations.
- * Transactions managed manually (begin/commit/rollback).
+ * Transactions managed declaratively with @Transactional annotation.
+ * 
+ * This meets the requirement: "Būtinos automatinės/deklaratyvios DB transakcijos"
+ * (Automatic/declarative transactions required - manual begin()/commit() not allowed).
  */
 @ApplicationScoped
+@Transactional
 public class StudentJpaDAO {
     
     @Inject
@@ -55,74 +60,41 @@ public class StudentJpaDAO {
     }
     
     /**
-     * Save new student with manual transaction.
+     * Save new student with declarative transaction.
+     * Transaction automatically managed by @Transactional interceptor.
      */
     public void save(Student student) {
-        try {
-            em.getTransaction().begin();
-            em.persist(student);
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            throw e;
-        }
+        em.persist(student);
     }
     
     /**
      * Update existing student.
+     * Transaction automatically managed by @Transactional interceptor.
      */
     public Student update(Student student) {
-        try {
-            em.getTransaction().begin();
-            Student merged = em.merge(student);
-            em.getTransaction().commit();
-            return merged;
-        } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            throw e;
-        }
+        return em.merge(student);
     }
     
     /**
      * Delete student.
+     * Transaction automatically managed by @Transactional interceptor.
      */
     public void delete(Long id) {
-        try {
-            em.getTransaction().begin();
-            Student student = em.find(Student.class, id);
-            if (student != null) {
-                em.remove(student);
-            }
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            throw e;
+        Student student = em.find(Student.class, id);
+        if (student != null) {
+            em.remove(student);
         }
     }
     
     /**
      * Enroll student in subject (demonstrates many-to-many).
+     * Transaction automatically managed by @Transactional interceptor.
      */
     public void enrollInSubject(Long studentId, Long subjectId) {
-        try {
-            em.getTransaction().begin();
-            Student student = em.find(Student.class, studentId);
-            com.myfirstproject.entity.Subject subject = em.find(com.myfirstproject.entity.Subject.class, subjectId);
-            if (student != null && subject != null) {
-                student.addSubject(subject);
-            }
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            if (em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            throw e;
+        Student student = em.find(Student.class, studentId);
+        com.myfirstproject.entity.Subject subject = em.find(com.myfirstproject.entity.Subject.class, subjectId);
+        if (student != null && subject != null) {
+            student.addSubject(subject);
         }
     }
 }

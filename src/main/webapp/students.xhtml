@@ -37,13 +37,7 @@
             <h:link outcome="groups" value="#{student.group.name}" />
         </h:column>
         
-        <h:column>
-            <f:facet name="header">Subjects</f:facet>
-            <ui:repeat value="#{student.subjects}" var="subject">
-                <h:link outcome="subjects" value="#{subject.name}" /><br/>
-            </ui:repeat>
-            <h:outputText value="None" rendered="#{student.subjects.size() == 0}" />
-        </h:column>
+
         
         <h:column>
             <f:facet name="header">Actions</f:facet>

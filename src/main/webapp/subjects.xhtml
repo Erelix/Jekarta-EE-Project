@@ -33,14 +33,6 @@
         </h:column>
         
         <h:column>
-            <f:facet name="header">Enrolled Students</f:facet>
-            <ui:repeat value="#{subject.students}" var="student">
-                <h:link outcome="students" value="#{student.fullName}" /><br/>
-            </ui:repeat>
-            <h:outputText value="None" rendered="#{subject.students.size() == 0}" />
-        </h:column>
-        
-        <h:column>
             <f:facet name="header">Actions</f:facet>
             <h:form>
                 <h:commandButton value="Edit" action="#{subjectBean.editSubject(subject.id)}" />

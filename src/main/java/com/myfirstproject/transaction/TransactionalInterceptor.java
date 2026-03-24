@@ -7,15 +7,6 @@ import jakarta.interceptor.InvocationContext;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 
-/**
- * CDI Interceptor for automatic transaction management.
- * 
- * When a method is annotated with @Transactional, this interceptor:
- * 1. Begins a transaction before method execution
- * 2. Commits the transaction if the method succeeds
- * 3. Rolls back the transaction if an exception occurs
- * 
- */
 @Transactional
 @Interceptor
 public class TransactionalInterceptor {

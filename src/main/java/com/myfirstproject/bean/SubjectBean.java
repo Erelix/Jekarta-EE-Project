@@ -10,9 +10,7 @@ import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
-/**
- * Business logic component for Subject operations using JPA DAO.
- */
+
 @Named
 @RequestScoped
 public class SubjectBean implements Serializable {

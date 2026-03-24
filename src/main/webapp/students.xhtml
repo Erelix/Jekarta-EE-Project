@@ -1,54 +1,58 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 <h:head>
     <title>Students</title>
 </h:head>
 <h:body>
     <h1>Students</h1>
-    
+
     <h:link outcome="student-form" value="Add New Student" />
-    
+
     <h:dataTable value="#{studentBean.students}" var="student" border="1">
         <h:column>
             <f:facet name="header">ID</f:facet>
             #{student.id}
         </h:column>
-        
+
         <h:column>
             <f:facet name="header">First Name</f:facet>
             #{student.firstName}
         </h:column>
-        
+
         <h:column>
             <f:facet name="header">Last Name</f:facet>
             #{student.lastName}
         </h:column>
-        
+
         <h:column>
             <f:facet name="header">Email</f:facet>
             #{student.email}
         </h:column>
-        
+
         <h:column>
             <f:facet name="header">Group</f:facet>
             <h:link outcome="groups" value="#{student.group.name}" />
         </h:column>
-        
 
-        
+        <h:column>
+            <f:facet name="header">Subjects</f:facet>
+            <ui:repeat value="#{student.subjects}" var="subject" rendered="#{not empty student.subjects}">
+                <div>#{subject.name}</div>
+            </ui:repeat>
+            <h:outputText value="No subjects" rendered="#{empty student.subjects}" />
+        </h:column>
+
         <h:column>
             <f:facet name="header">Actions</f:facet>
             <h:form>
                 <h:commandButton value="Edit" action="#{studentBean.editStudent(student.id)}" />
-                <h:commandButton value="Delete" action="#{studentBean.deleteStudent(student.id)}" 
-                                 onclick="return confirm('Are you sure you want to delete this student?');" />
+                <h:commandButton value="Delete" action="#{studentBean.deleteStudent(student.id)}"
+                    onclick="return confirm('Are you sure you want to delete this student?');" />
             </h:form>
         </h:column>
     </h:dataTable>
-    
+
     <p>
         <h:link outcome="index" value="Back to Home" />
         |
@@ -57,4 +61,5 @@
         <h:link outcome="subjects" value="View Subjects" />
     </p>
 </h:body>
+
 </html>

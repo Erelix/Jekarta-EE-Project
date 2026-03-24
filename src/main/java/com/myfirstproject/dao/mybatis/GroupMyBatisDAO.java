@@ -10,16 +10,10 @@ import com.myfirstproject.mybatis.util.MyBatisUtil;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
-/**
- * MyBatis Data Access Object for Group.
- * Demonstrates one-to-many relationship handling with MyBatis.
- */
+
 @ApplicationScoped
 public class GroupMyBatisDAO {
     
-    /**
-     * Find group by ID.
-     */
     public GroupModel findById(Long id) {
         try (SqlSession session = MyBatisUtil.openSession()) {
             GroupMapper mapper = session.getMapper(GroupMapper.class);
@@ -27,9 +21,6 @@ public class GroupMyBatisDAO {
         }
     }
     
-    /**
-     * Find all groups.
-     */
     public List<GroupModel> findAll() {
         try (SqlSession session = MyBatisUtil.openSession()) {
             GroupMapper mapper = session.getMapper(GroupMapper.class);
@@ -37,9 +28,6 @@ public class GroupMyBatisDAO {
         }
     }
     
-    /**
-     * Find group with students (demonstrates one-to-many eager loading).
-     */
     public GroupModel findByIdWithStudents(Long id) {
         try (SqlSession session = MyBatisUtil.openSession()) {
             GroupMapper mapper = session.getMapper(GroupMapper.class);
@@ -47,9 +35,6 @@ public class GroupMyBatisDAO {
         }
     }
     
-    /**
-     * Save new group.
-     */
     public void save(GroupModel group) {
         try (SqlSession session = MyBatisUtil.openSession()) {
             GroupMapper mapper = session.getMapper(GroupMapper.class);
@@ -58,9 +43,6 @@ public class GroupMyBatisDAO {
         }
     }
     
-    /**
-     * Update existing group.
-     */
     public void update(GroupModel group) {
         try (SqlSession session = MyBatisUtil.openSession()) {
             GroupMapper mapper = session.getMapper(GroupMapper.class);
@@ -69,9 +51,6 @@ public class GroupMyBatisDAO {
         }
     }
     
-    /**
-     * Delete group.
-     */
     public void delete(Long id) {
         try (SqlSession session = MyBatisUtil.openSession()) {
             GroupMapper mapper = session.getMapper(GroupMapper.class);

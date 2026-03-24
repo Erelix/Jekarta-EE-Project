@@ -10,22 +10,9 @@ import com.myfirstproject.mybatis.util.MyBatisUtil;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
-/**
- * MyBatis Data Access Object for Student.
- * Uses MyBatis SqlSession and mapper interfaces for database operations.
- * 
- * Key differences from JPA:
- * - Manual session management (open/close)
- * - Manual transaction control (commit/rollback)
- * - Direct SQL control via XML mappers
- * - POJOs instead of managed entities
- */
 @ApplicationScoped
 public class StudentMyBatisDAO {
     
-    /**
-     * Find student by ID with relationships.
-     */
     public StudentModel findById(Long id) {
         try (SqlSession session = MyBatisUtil.openSession()) {
             StudentMapper mapper = session.getMapper(StudentMapper.class);
@@ -33,9 +20,6 @@ public class StudentMyBatisDAO {
         }
     }
     
-    /**
-     * Find all students.
-     */
     public List<StudentModel> findAll() {
         try (SqlSession session = MyBatisUtil.openSession()) {
             StudentMapper mapper = session.getMapper(StudentMapper.class);
@@ -43,9 +27,6 @@ public class StudentMyBatisDAO {
         }
     }
     
-    /**
-     * Find students by group ID (demonstrates one-to-many).
-     */
     public List<StudentModel> findByGroupId(Long groupId) {
         try (SqlSession session = MyBatisUtil.openSession()) {
             StudentMapper mapper = session.getMapper(StudentMapper.class);
@@ -54,7 +35,6 @@ public class StudentMyBatisDAO {
     }
     
     /**
-     * Save new student.
      * Manual transaction management: commit() must be called.
      */
     public void save(StudentModel student) {
@@ -65,9 +45,6 @@ public class StudentMyBatisDAO {
         }
     }
     
-    /**
-     * Update existing student.
-     */
     public void update(StudentModel student) {
         try (SqlSession session = MyBatisUtil.openSession()) {
             StudentMapper mapper = session.getMapper(StudentMapper.class);
@@ -76,9 +53,6 @@ public class StudentMyBatisDAO {
         }
     }
     
-    /**
-     * Delete student.
-     */
     public void delete(Long id) {
         try (SqlSession session = MyBatisUtil.openSession()) {
             StudentMapper mapper = session.getMapper(StudentMapper.class);
@@ -87,9 +61,6 @@ public class StudentMyBatisDAO {
         }
     }
     
-    /**
-     * Enroll student in subject (demonstrates many-to-many).
-     */
     public void enrollInSubject(Long studentId, Long subjectId) {
         try (SqlSession session = MyBatisUtil.openSession()) {
             StudentMapper mapper = session.getMapper(StudentMapper.class);
@@ -98,9 +69,6 @@ public class StudentMyBatisDAO {
         }
     }
     
-    /**
-     * Unenroll student from subject.
-     */
     public void unenrollFromSubject(Long studentId, Long subjectId) {
         try (SqlSession session = MyBatisUtil.openSession()) {
             StudentMapper mapper = session.getMapper(StudentMapper.class);

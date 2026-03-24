@@ -15,9 +15,6 @@ import jakarta.persistence.EntityTransaction;
  * 2. Commits the transaction if the method succeeds
  * 3. Rolls back the transaction if an exception occurs
  * 
- * This provides declarative transaction management without manual begin()/commit() calls,
- * meeting the requirement: "rankomis rašyti 'begin()/commit()' negalima"
- * (manual begin()/commit() is not allowed).
  */
 @Transactional
 @Interceptor

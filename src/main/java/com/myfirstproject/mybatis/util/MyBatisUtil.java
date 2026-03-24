@@ -8,10 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
-/**
- * MyBatis utility class to manage SqlSessionFactory.
- * SqlSessionFactory is thread-safe and should be created once per application.
- */
+
 public class MyBatisUtil {
     
     private static SqlSessionFactory sqlSessionFactory;
@@ -35,7 +32,6 @@ public class MyBatisUtil {
     
     /**
      * Open a new SqlSession.
-     * Remember to close it after use!
      */
     public static SqlSession openSession() {
         return sqlSessionFactory.openSession();

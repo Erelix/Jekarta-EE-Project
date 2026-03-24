@@ -8,15 +8,6 @@ import java.lang.annotation.Target;
 
 import jakarta.interceptor.InterceptorBinding;
 
-/**
- * Declarative transaction annotation.
- * Methods annotated with @Transactional will automatically have transactions managed.
- * The interceptor will begin a transaction before the method executes and commit after success,
- * or rollback on exception.
- * 
- * This meets the requirement: "Būtinos automatinės/deklaratyvios DB transakcijos"
- * (Automatic/declarative DB transactions are required).
- */
 @Inherited
 @InterceptorBinding
 @Retention(RetentionPolicy.RUNTIME)

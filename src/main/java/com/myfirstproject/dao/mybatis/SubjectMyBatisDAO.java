@@ -10,16 +10,9 @@ import com.myfirstproject.mybatis.util.MyBatisUtil;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
-/**
- * MyBatis Data Access Object for Subject.
- * Demonstrates many-to-many relationship handling with MyBatis.
- */
 @ApplicationScoped
 public class SubjectMyBatisDAO {
     
-    /**
-     * Find subject by ID.
-     */
     public SubjectModel findById(Long id) {
         try (SqlSession session = MyBatisUtil.openSession()) {
             SubjectMapper mapper = session.getMapper(SubjectMapper.class);
@@ -27,9 +20,6 @@ public class SubjectMyBatisDAO {
         }
     }
     
-    /**
-     * Find all subjects.
-     */
     public List<SubjectModel> findAll() {
         try (SqlSession session = MyBatisUtil.openSession()) {
             SubjectMapper mapper = session.getMapper(SubjectMapper.class);
@@ -37,9 +27,6 @@ public class SubjectMyBatisDAO {
         }
     }
     
-    /**
-     * Find subject with enrolled students (demonstrates many-to-many).
-     */
     public SubjectModel findByIdWithStudents(Long id) {
         try (SqlSession session = MyBatisUtil.openSession()) {
             SubjectMapper mapper = session.getMapper(SubjectMapper.class);
@@ -47,9 +34,6 @@ public class SubjectMyBatisDAO {
         }
     }
     
-    /**
-     * Find subjects for a student (demonstrates many-to-many from other side).
-     */
     public List<SubjectModel> findByStudentId(Long studentId) {
         try (SqlSession session = MyBatisUtil.openSession()) {
             SubjectMapper mapper = session.getMapper(SubjectMapper.class);
@@ -57,9 +41,6 @@ public class SubjectMyBatisDAO {
         }
     }
     
-    /**
-     * Save new subject.
-     */
     public void save(SubjectModel subject) {
         try (SqlSession session = MyBatisUtil.openSession()) {
             SubjectMapper mapper = session.getMapper(SubjectMapper.class);
@@ -68,9 +49,6 @@ public class SubjectMyBatisDAO {
         }
     }
     
-    /**
-     * Update existing subject.
-     */
     public void update(SubjectModel subject) {
         try (SqlSession session = MyBatisUtil.openSession()) {
             SubjectMapper mapper = session.getMapper(SubjectMapper.class);
@@ -79,9 +57,6 @@ public class SubjectMyBatisDAO {
         }
     }
     
-    /**
-     * Delete subject.
-     */
     public void delete(Long id) {
         try (SqlSession session = MyBatisUtil.openSession()) {
             SubjectMapper mapper = session.getMapper(SubjectMapper.class);

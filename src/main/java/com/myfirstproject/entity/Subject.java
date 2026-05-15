@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 
 @Entity
 @Table(name = "subject")
@@ -19,7 +20,10 @@ public class Subject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
+    @Version
+    private Long version;
+
     @Column(nullable = false)
     private String name;
     
@@ -47,7 +51,15 @@ public class Subject {
     public void setId(Long id) {
         this.id = id;
     }
-    
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+
     public String getName() {
         return name;
     }

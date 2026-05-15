@@ -10,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 
 @Entity
 @Table(name = "student_group")
@@ -18,7 +19,10 @@ public class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
+    @Version
+    private Long version;
+
     @Column(nullable = false)
     private String name;
     
@@ -42,7 +46,15 @@ public class Group {
     public void setId(Long id) {
         this.id = id;
     }
-    
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+
     public String getName() {
         return name;
     }

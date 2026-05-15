@@ -6,10 +6,13 @@ import jakarta.interceptor.Interceptor;
 import jakarta.interceptor.InvocationContext;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import java.io.Serializable;
 
 @Transactional
 @Interceptor
-public class TransactionalInterceptor {
+public class TransactionalInterceptor implements Serializable {
+
+    private static final long serialVersionUID = 1L;
     
     @Inject
     private EntityManager em;

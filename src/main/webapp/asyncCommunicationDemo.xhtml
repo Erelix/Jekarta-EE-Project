@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Async Communication Demo</title>
+</h:head>
+<h:body>
+    <h1>Task 3: Asynchronous Communication</h1>
+
+    <h:form>
+        <h2>1. Start Task</h2>
+        <p>
+            Task Name: <h:inputText value="#{asyncDemo.taskName}" />
+            Duration (s): <h:inputText value="#{asyncDemo.durationSeconds}" type="number" />
+            <h:commandButton action="#{asyncDemo.startAsyncTask()}" value="Start Basic" />
+            <h:commandButton action="#{asyncDemo.startAsyncTaskWithDb()}" value="Start with DB" />
+        </p>
+        <p>#{asyncDemo.pollMessage}</p>
+
+        <h2>2. Active Tasks</h2>
+        <h:panelGroup rendered="#{asyncDemo.activeTasks.size() > 0}">
+            <h:dataTable value="#{asyncDemo.activeTasks}" var="task" border="1">
+                <h:column>
+                    <f:facet name="header">ID</f:facet>
+                    <h:outputText value="#{task.id}" />
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Name</f:facet>
+                    <h:outputText value="#{task.name}" />
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Status</f:facet>
+                    <h:outputText value="#{task.status}" />
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Duration (s)</f:facet>
+                    <h:outputText value="#{task.durationSeconds}" />
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Elapsed (s)</f:facet>
+                    <h:outputText value="#{task.elapsedSeconds}" />
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Remaining (s)</f:facet>
+                    <h:outputText value="#{task.remainingSeconds}" />
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Action</f:facet>
+                    <h:commandButton action="#{asyncDemo.pollTask}" value="Poll">
+                        <f:setPropertyActionListener target="#{asyncDemo.selectedTaskId}" value="#{task.id}" />
+                    </h:commandButton>
+                </h:column>
+            </h:dataTable>
+            <p>
+                <h:commandButton action="#{asyncDemo.refreshAllTasks}" value="Refresh All" />
+                <h:commandButton action="#{asyncDemo.clearCompleted}" value="Clear Done" />
+            </p>
+        </h:panelGroup>
+        <h:panelGroup rendered="#{asyncDemo.activeTasks.size() == 0}">
+            <p>No active tasks</p>
+        </h:panelGroup>
+
+        <h2>3. Result</h2>
+        <h:panelGroup rendered="#{not empty asyncDemo.selectedResult}">
+            <p><strong>Task:</strong> #{asyncDemo.selectedResult.taskName}</p>
+            <p><strong>Status:</strong> #{asyncDemo.selectedResult.status}</p>
+            <p><strong>Duration:</strong> #{asyncDemo.selectedResult.durationSeconds} s</p>
+            <p><strong>Result:</strong> #{asyncDemo.selectedResult.result}</p>
+        </h:panelGroup>
+        <h:panelGroup rendered="#{empty asyncDemo.selectedResult}">
+            <p>No result yet</p>
+        </h:panelGroup>
+
+        <p>
+            <h:link outcome="index" value="Back to Home" />
+            |
+            <h:link outcome="optimisticLockingDemo" value="Optimistic Locking Demo" />
+            |
+        </p>
+    </h:form>
+</h:body>
+</html>

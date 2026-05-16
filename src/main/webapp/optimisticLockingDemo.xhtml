@@ -93,18 +93,14 @@
             </h:panelGroup>
         </div>
 
-        <div class="demo-box">
-            <h3>Explanation</h3>
-            <ul>
-                <li><strong>@Version annotation:</strong> Adds automatic version management to the entity</li>
-                <li><strong>Transaction rollback:</strong> OptimisticLockException automatically rolls back the transaction</li>
-                <li><strong>EntityManager remains open:</strong> You can immediately clear and retry</li>
-                <li><strong>Database unchanged:</strong> If exception occurs, no update is committed</li>
-                <li><strong>Proper handling:</strong> em.clear() → reload fresh data → retry operation</li>
-            </ul>
-        </div>
-
         <h:commandButton value="Reset Demo" action="#{optimisticLockDemo.reset()}" />
+
+        <p>
+            <h:link outcome="index" value="Back to Home" />
+            |
+            <h:link outcome="asyncCommunicationDemo" value="Async Communication Demo" />
+            |
+        </p>
     </h:form>
 </h:body>
 

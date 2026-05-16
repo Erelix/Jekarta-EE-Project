@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <title>CDI Glass-box Extensibility Demo</title>
+</h:head>
+
+<h:body>
+    <h1>CDI Glass-box Extensibility Demonstration</h1>
+<!--    <p>This demonstration shows how CDI enables glass-box extensibility through Alternatives, Specialization, Interceptors, and Decorators.</p>-->
+
+    <h:form>
+        <!-- DEMO 1: ALTERNATIVES -->
+        <div class="demo-box">
+            <h3>1. @Alternative</h3>
+            <p>
+                Provides alternative implementations of a bean interface.
+                Only the selected alternative is used.
+            </p>
+            <p>
+                <span class="feature-label">Test Name:</span>
+                <h:inputText value="#{cdiExtensibilityDemo.testName}" size="30" />
+            </p>
+            <h:commandButton value="Demonstrate Alternatives"
+                action="#{cdiExtensibilityDemo.demonstrateAlternatives()}" />
+
+            <h:panelGroup rendered="#{not empty cdiExtensibilityDemo.testResult}">
+                <div class="result-box">
+                    <strong>Result:</strong> <span class="success">#{cdiExtensibilityDemo.testResult}</span>
+                </div>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty cdiExtensibilityDemo.currentConfiguration}">
+                <div class="config-box">
+                    <strong>Current Configuration:</strong> #{cdiExtensibilityDemo.currentConfiguration}
+                </div>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty cdiExtensibilityDemo.explanationText}">
+                <div class="explanation-box">
+                    #{cdiExtensibilityDemo.explanationText}
+                </div>
+            </h:panelGroup>
+        </div>
+
+        <!-- DEMO 2: SPECIALIZATION -->
+        <div class="demo-box separator">
+            <h3>2. @Specializes</h3>
+            <p>
+                A specialized bean automatically replaces its parent bean
+                in all dependency injection points.
+            </p>
+            <!-- <p>
+                <span class="feature-label">Key difference from @Alternative:</span>
+                @Specializes automatically replaces the parent without explicit selection.
+                The specialized bean extends or implements the parent bean.
+            </p> -->
+            <h:commandButton value="Demonstrate Specialization"
+                action="#{cdiExtensibilityDemo.demonstrateSpecialization()}" />
+
+            <h:panelGroup rendered="#{not empty cdiExtensibilityDemo.testResult}">
+                <div class="result-box">
+                    <strong>Result:</strong> <span class="success">#{cdiExtensibilityDemo.testResult}</span>
+                </div>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty cdiExtensibilityDemo.currentConfiguration}">
+                <div class="config-box">
+                    <strong>Current Configuration:</strong> #{cdiExtensibilityDemo.currentConfiguration}
+                </div>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty cdiExtensibilityDemo.explanationText}">
+                <div class="explanation-box">
+                    #{cdiExtensibilityDemo.explanationText}
+                </div>
+            </h:panelGroup>
+        </div>
+
+        <!-- DEMO 3: INTERCEPTORS -->
+        <div class="demo-box separator">
+            <h3>3. @Interceptor</h3>
+            <p>
+                Interceptors enable cross-cutting concerns (logging, timing, security)
+                without modifying business logic.
+            </p>
+            <!-- <p>
+                <span class="feature-label">Configuration:</span>
+                Enabled/disabled via <code>&lt;interceptors&gt;</code> in beans.xml
+            </p>
+            <p>
+                <span class="feature-label">How it works:</span>
+            </p>
+            <ul>
+                <li>1. Define an interceptor binding annotation (@Logged)</li>
+                <li>2. Mark the interceptor with @Interceptor and @InterceptorBinding</li>
+                <li>3. Use the binding annotation on bean methods or classes</li>
+                <li>4. Enable interceptor in beans.xml - it wraps all marked methods</li>
+            </ul> -->
+            <p>
+                <span class="feature-label">Use case:</span>
+                Logging, performance monitoring, security checks, transaction management.
+            </p>
+            <h:commandButton value="Demonstrate Interceptors"
+                action="#{cdiExtensibilityDemo.demonstrateInterceptors()}" />
+
+            <h:panelGroup rendered="#{not empty cdiExtensibilityDemo.testResult}">
+                <div class="result-box">
+                    <strong>Result:</strong> <span class="success">#{cdiExtensibilityDemo.testResult}</span>
+                </div>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty cdiExtensibilityDemo.currentConfiguration}">
+                <div class="config-box">
+                    <strong>Current Configuration:</strong> #{cdiExtensibilityDemo.currentConfiguration}
+                </div>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty cdiExtensibilityDemo.explanationText}">
+                <div class="explanation-box">
+                    #{cdiExtensibilityDemo.explanationText}
+                </div>
+            </h:panelGroup>
+        </div>
+
+        <!-- DEMO 4: DECORATORS -->
+        <div class="demo-box separator">
+            <h3>4. @Decorator</h3>
+            <p>
+                Decorators add behavior to beans by wrapping them,
+                similar to the Decorator design pattern.
+            </p>
+<!--            <p>-->
+<!--                <span class="feature-label">Difference from Interceptor:</span>-->
+<!--                Interceptors wrap method calls; decorators wrap beans.-->
+<!--                Decorators work at bean level, interceptors at method level.-->
+<!--            </p>-->
+            <h:commandButton value="Demonstrate Decorators"
+                action="#{cdiExtensibilityDemo.demonstrateDecorators()}" />
+
+            <h:panelGroup rendered="#{not empty cdiExtensibilityDemo.testResult}">
+                <div class="result-box">
+                    <strong>Result:</strong> <span class="success">#{cdiExtensibilityDemo.testResult}</span>
+                </div>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty cdiExtensibilityDemo.currentConfiguration}">
+                <div class="config-box">
+                    <strong>Current Configuration:</strong> #{cdiExtensibilityDemo.currentConfiguration}
+                </div>
+            </h:panelGroup>
+
+            <h:panelGroup rendered="#{not empty cdiExtensibilityDemo.explanationText}">
+                <div class="explanation-box">
+                    #{cdiExtensibilityDemo.explanationText}
+                </div>
+            </h:panelGroup>
+        </div>
+
+        <!-- RESET -->
+        <div class="demo-box separator">
+            <h:commandButton value="Reset Demo" action="#{cdiExtensibilityDemo.reset()}" />
+        </div>
+
+        <!-- NAVIGATION -->
+        <div class="separator">
+            <p>
+                <h:link outcome="index" value="Back to Home" />
+                |
+                <h:link outcome="optimisticLockingDemo" value="Optimistic Locking Demo" />
+                |
+                <h:link outcome="asyncCommunicationDemo" value="Async Communication Demo" />
+            </p>
+        </div>
+
+    </h:form>
+
+<!--    &lt;!&ndash; BEANS.XML CONFIGURATION GUIDE &ndash;&gt;-->
+<!--    <div class="demo-box separator">-->
+<!--        <h3>beans.xml Configuration Guide</h3>-->
+<!--        <p>To enable/disable features, modify WEB-INF/beans.xml:</p>-->
+
+<!--        <h4>Enable EnhancedGreetingService Alternative:</h4>-->
+<!--        <code style="background-color: #f5f5f5; padding: 10px; display: block; margin: 10px 0;">-->
+<!--&lt;alternatives&gt;<br/>-->
+<!--&#160;&#160;&lt;class&gt;com.myfirstproject.cdi.service.EnhancedGreetingService&lt;/class&gt;<br/>-->
+<!--&lt;/alternatives&gt;-->
+<!--        </code>-->
+
+<!--        <h4>Enable PremiumGreetingService Specialization:</h4>-->
+<!--        <code style="background-color: #f5f5f5; padding: 10px; display: block; margin: 10px 0;">-->
+<!--&lt;alternatives&gt;<br/>-->
+<!--&#160;&#160;&lt;class&gt;com.myfirstproject.cdi.service.PremiumGreetingService&lt;/class&gt;<br/>-->
+<!--&lt;/alternatives&gt;-->
+<!--        </code>-->
+
+<!--        <h4>Enable LoggingInterceptor:</h4>-->
+<!--        <code style="background-color: #f5f5f5; padding: 10px; display: block; margin: 10px 0;">-->
+<!--&lt;interceptors&gt;<br/>-->
+<!--&#160;&#160;&lt;class&gt;com.myfirstproject.cdi.interceptor.LoggingInterceptor&lt;/class&gt;<br/>-->
+<!--&lt;/interceptors&gt;-->
+<!--        </code>-->
+
+<!--        <h4>Enable GreetingDecorator:</h4>-->
+<!--        <code style="background-color: #f5f5f5; padding: 10px; display: block; margin: 10px 0;">-->
+<!--&lt;decorators&gt;<br/>-->
+<!--&#160;&#160;&lt;class&gt;com.myfirstproject.cdi.decorator.GreetingDecorator&lt;/class&gt;<br/>-->
+<!--&lt;/decorators&gt;-->
+<!--        </code>-->
+
+<!--        <h4>Full Example with All Features Enabled:</h4>-->
+<!--        <code style="background-color: #f5f5f5; padding: 10px; display: block; margin: 10px 0;">-->
+<!--&lt;?xml version="1.0" encoding="UTF-8"?&gt;<br/>-->
+<!--&lt;beans xmlns="https://jakarta.ee/xml/ns/jakartaee"<br/>-->
+<!--&#160;&#160;&#160;&#160;xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"<br/>-->
+<!--&#160;&#160;&#160;&#160;xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/beans_4_0.xsd"<br/>-->
+<!--&#160;&#160;&#160;&#160;version="4.0"<br/>-->
+<!--&#160;&#160;&#160;&#160;bean-discovery-mode="all"&gt;<br/>-->
+<!--<br/>-->
+<!--&#160;&#160;&lt;!&#45;&#45; Interceptors &#45;&#45;&gt;<br/>-->
+<!--&#160;&#160;&lt;interceptors&gt;<br/>-->
+<!--&#160;&#160;&#160;&#160;&lt;class&gt;com.myfirstproject.transaction.TransactionalInterceptor&lt;/class&gt;<br/>-->
+<!--&#160;&#160;&#160;&#160;&lt;class&gt;com.myfirstproject.cdi.interceptor.LoggingInterceptor&lt;/class&gt;<br/>-->
+<!--&#160;&#160;&lt;/interceptors&gt;<br/>-->
+<!--<br/>-->
+<!--&#160;&#160;&lt;!&#45;&#45; Decorators &#45;&#45;&gt;<br/>-->
+<!--&#160;&#160;&lt;decorators&gt;<br/>-->
+<!--&#160;&#160;&#160;&#160;&lt;class&gt;com.myfirstproject.cdi.decorator.GreetingDecorator&lt;/class&gt;<br/>-->
+<!--&#160;&#160;&lt;/decorators&gt;<br/>-->
+<!--<br/>-->
+<!--&#160;&#160;&lt;!&#45;&#45; Alternatives (try EnhancedGreetingService or PremiumGreetingService) &#45;&#45;&gt;<br/>-->
+<!--&#160;&#160;&lt;alternatives&gt;<br/>-->
+<!--&#160;&#160;&#160;&#160;&lt;!&#45;&#45;&lt;class&gt;com.myfirstproject.cdi.service.EnhancedGreetingService&lt;/class&gt;&#45;&#45;&gt;<br/>-->
+<!--&#160;&#160;&#160;&#160;&lt;!&#45;&#45;&lt;class&gt;com.myfirstproject.cdi.service.PremiumGreetingService&lt;/class&gt;&#45;&#45;&gt;<br/>-->
+<!--&#160;&#160;&lt;/alternatives&gt;<br/>-->
+<!--<br/>-->
+<!--&lt;/beans&gt;-->
+<!--        </code>-->
+<!--    </div>-->
+
+</h:body>
+
+</html>

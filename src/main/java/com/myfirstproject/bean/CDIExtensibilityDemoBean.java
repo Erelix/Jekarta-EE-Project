@@ -147,12 +147,7 @@ public class CDIExtensibilityDemoBean implements Serializable {
         reset();
         
         try {
-            System.out.println("\n========== INTERCEPTOR DEMONSTRATION START ==========");
-            System.out.println("If interceptor is ENABLED in beans.xml, you will see logs:");
-            System.out.println("  >>> INTERCEPTOR LOG: Entering ...");
-            System.out.println("  <<< INTERCEPTOR LOG: Exiting ...");
-            System.out.println("If interceptor is DISABLED, you won't see these logs.");
-            System.out.println("===================================================\n");
+            System.out.println("Interceptor enabled");
             // Trigger the @Logged service so the LoggingInterceptor can run
             String serviceName = loggedGreetingService.getServiceName();
             String greeting = loggedGreetingService.greet(testName);

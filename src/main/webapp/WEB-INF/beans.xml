@@ -7,14 +7,13 @@
     
     <!-- Enable transaction interceptor for declarative transaction management -->
     <interceptors>
-<!--        <class>com.myfirstproject.transaction.TransactionalInterceptor</class>-->
-        <!-- Uncomment to enable CDI logging interceptor demonstration -->
-<!--         <class>com.myfirstproject.cdi.interceptor.LoggingInterceptor</class>-->
+       <class>com.myfirstproject.transaction.TransactionalInterceptor</class>
+
+<!--        <class>com.myfirstproject.cdi.interceptor.LoggingInterceptor</class>-->
     </interceptors>
 
-    <!-- Enable decorators for CDI extensibility demonstration -->
     <decorators>
-         <!-- <class>com.myfirstproject.cdi.decorator.GreetingDecorator</class> -->
+<!--         <class>com.myfirstproject.cdi.decorator.GreetingDecorator</class>-->
     </decorators>
 
     <!-- Alternative implementations - uncomment one to activate -->

@@ -16,10 +16,10 @@
         <!-- DEMO 1: ALTERNATIVES -->
         <div class="demo-box">
             <h3>1. @Alternative</h3>
-            <p>
-                Provides alternative implementations of a bean interface.
-                Only the selected alternative is used.
-            </p>
+<!--            <p>-->
+<!--                Provides alternative implementations of a bean interface.-->
+<!--                Only the selected alternative is used.-->
+<!--            </p>-->
             <p>
                 <span class="feature-label">Test Name:</span>
                 <h:inputText value="#{cdiExtensibilityDemo.testName}" size="30" />
@@ -49,10 +49,10 @@
         <!-- DEMO 2: SPECIALIZATION -->
         <div class="demo-box separator">
             <h3>2. @Specializes</h3>
-            <p>
-                A specialized bean automatically replaces its parent bean
-                in all dependency injection points.
-            </p>
+<!--            <p>-->
+<!--                A specialized bean automatically replaces its parent bean-->
+<!--                in all dependency injection points.-->
+<!--            </p>-->
             <!-- <p>
                 <span class="feature-label">Key difference from @Alternative:</span>
                 @Specializes automatically replaces the parent without explicit selection.
@@ -83,10 +83,10 @@
         <!-- DEMO 3: INTERCEPTORS -->
         <div class="demo-box separator">
             <h3>3. @Interceptor</h3>
-            <p>
-                Interceptors enable cross-cutting concerns (logging, timing, security)
-                without modifying business logic.
-            </p>
+<!--            <p>-->
+<!--                Interceptors enable cross-cutting concerns (logging, timing, security)-->
+<!--                without modifying business logic.-->
+<!--            </p>-->
             <!-- <p>
                 <span class="feature-label">Configuration:</span>
                 Enabled/disabled via <code>&lt;interceptors&gt;</code> in beans.xml
@@ -100,10 +100,10 @@
                 <li>3. Use the binding annotation on bean methods or classes</li>
                 <li>4. Enable interceptor in beans.xml - it wraps all marked methods</li>
             </ul> -->
-            <p>
-                <span class="feature-label">Use case:</span>
-                Logging, performance monitoring, security checks, transaction management.
-            </p>
+<!--            <p>-->
+<!--                <span class="feature-label">Use case:</span>-->
+<!--                Logging, performance monitoring, security checks, transaction management.-->
+<!--            </p>-->
             <h:commandButton value="Demonstrate Interceptors"
                 action="#{cdiExtensibilityDemo.demonstrateInterceptors()}" />
 
@@ -129,10 +129,10 @@
         <!-- DEMO 4: DECORATORS -->
         <div class="demo-box separator">
             <h3>4. @Decorator</h3>
-            <p>
-                Decorators add behavior to beans by wrapping them,
-                similar to the Decorator design pattern.
-            </p>
+<!--            <p>-->
+<!--                Decorators add behavior to beans by wrapping them,-->
+<!--                similar to the Decorator design pattern.-->
+<!--            </p>-->
 <!--            <p>-->
 <!--                <span class="feature-label">Difference from Interceptor:</span>-->
 <!--                Interceptors wrap method calls; decorators wrap beans.-->

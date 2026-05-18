@@ -5,7 +5,6 @@
        version="4.0"
        bean-discovery-mode="all">
     
-    <!-- Enable transaction interceptor for declarative transaction management -->
     <interceptors>
        <class>com.myfirstproject.transaction.TransactionalInterceptor</class>
 
@@ -18,7 +17,6 @@
 
     <!-- Alternative implementations - uncomment one to activate -->
     <alternatives>
-        <!-- Alternatives 1 when Premium remove -->
 <!--         <class>com.myfirstproject.cdi.service.EnhancedGreetingService</class>-->
 
         <!-- <class>com.myfirstproject.cdi.service.PremiumGreetingService</class> -->

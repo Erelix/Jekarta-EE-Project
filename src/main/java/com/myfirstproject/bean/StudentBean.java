@@ -16,6 +16,7 @@ import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.OptimisticLockException;
 
 /**
  * Business logic component (CDI bean) for Student operations.
@@ -46,6 +47,8 @@ public class StudentBean implements Serializable {
     private Long selectedGroupId;
     private List<Long> selectedSubjectIds = new ArrayList<>();
     private Long editId;
+    private String errorMessage;
+    private String successMessage;
     
     public void loadStudent() {
         if (editId != null && editId > 0) {
@@ -64,6 +67,9 @@ public class StudentBean implements Serializable {
     @Transactional
     public String saveStudent() {
         try {
+            errorMessage = null;
+            successMessage = null;
+            
             // Set group BEFORE merge to avoid null validation error
             if (selectedGroupId != null) {
                 Group group = groupDAO.findById(selectedGroupId);
@@ -89,13 +95,47 @@ public class StudentBean implements Serializable {
             // Flush changes within the current context - everything is already managed
             em.flush();
             
+            successMessage = "Student saved successfully!";
             student = new Student();
             selectedGroupId = null;
             selectedSubjectIds = new ArrayList<>();
             students = null;
             return "students?faces-redirect=true";
+        } catch (OptimisticLockException e) {
+            errorMessage = "This record was modified by another user. Please reload and try again.";
+            return null;
         } catch (Exception e) {
             e.printStackTrace();
+            errorMessage = "Error saving student: " + e.getMessage();
+            return null;
+        }
+    }
+    
+    @Transactional
+    public String reloadAndRetry() {
+        try {
+            errorMessage = null;
+            
+            // Clear persistence context to force fresh load
+            em.clear();
+            
+            // Reload fresh data from database
+            if (student.getId() != null) {
+                student = studentDAO.findById(student.getId());
+                if (student != null) {
+                    selectedGroupId = student.getGroup() != null ? student.getGroup().getId() : null;
+                    selectedSubjectIds = new ArrayList<>();
+                    for (Subject subject : student.getSubjects()) {
+                        selectedSubjectIds.add(subject.getId());
+                    }
+                }
+            }
+            
+            successMessage = "Data reloaded. You can make your changes again.";
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            errorMessage = "Error reloading: " + e.getMessage();
             return null;
         }
     }
@@ -168,5 +208,21 @@ public class StudentBean implements Serializable {
     
     public void setEditId(Long editId) {
         this.editId = editId;
+    }
+    
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+    
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+    
+    public String getSuccessMessage() {
+        return successMessage;
+    }
+    
+    public void setSuccessMessage(String successMessage) {
+        this.successMessage = successMessage;
     }
 }

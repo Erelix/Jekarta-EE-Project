@@ -4,6 +4,12 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 <h:head>
     <title>Student Form</title>
+    <h:outputStylesheet>
+        .error-box { border: 2px solid #d9534f; padding: 10px; margin: 10px 0; background-color: #f8d7da; color: #721c24; }
+        .success-box { border: 2px solid #5cb85c; padding: 10px; margin: 10px 0; background-color: #d4edda; color: #155724; }
+        .version-info { font-size: 0.9em; color: #666; margin: 10px 0; padding: 5px; background-color: #f5f5f5; }
+        .retry-button { background-color: #0275d8; color: white; padding: 5px 10px; margin: 5px 5px 5px 0; }
+    </h:outputStylesheet>
 </h:head>
 <h:body>
     <f:metadata>
@@ -13,8 +19,29 @@
     
     <h1><h:outputText value="Add New Student" rendered="#{studentBean.student.id == null}" /><h:outputText value="Edit Student" rendered="#{studentBean.student.id != null}" /></h1>
     
+    <h:panelGroup rendered="#{not empty studentBean.errorMessage}">
+        <div class="error-box">
+            <strong>Error:</strong> #{studentBean.errorMessage}
+        </div>
+    </h:panelGroup>
+    
+    <h:panelGroup rendered="#{not empty studentBean.successMessage}">
+        <div class="success-box">
+            <strong>Success:</strong> #{studentBean.successMessage}
+        </div>
+    </h:panelGroup>
+    
     <h:form>
         <h:inputHidden value="#{studentBean.student.id}" />
+        <h:inputHidden value="#{studentBean.student.version}" />
+        
+        <h:panelGroup rendered="#{studentBean.student.id != null}">
+            <div class="version-info">
+                <strong>Record Version:</strong> #{studentBean.student.version}
+                <br/>
+                <em>This number changes each time the record is saved. If another user modified this record, you'll see an error.</em>
+            </div>
+        </h:panelGroup>
         <p>
             <label for="firstName">First Name *</label><br/>
             <h:inputText id="firstName" value="#{studentBean.student.firstName}" required="true" />
@@ -50,6 +77,7 @@
         <p>
             <h:commandButton value="Save" action="#{studentBean.saveStudent()}" />
             <h:button value="Cancel" outcome="students" />
+            <h:commandButton value="Reload and Retry" action="#{studentBean.reloadAndRetry()}" rendered="#{not empty studentBean.errorMessage}" />
         </p>
     </h:form>
     
